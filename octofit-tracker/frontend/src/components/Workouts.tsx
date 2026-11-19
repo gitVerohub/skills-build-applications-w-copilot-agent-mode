@@ -7,7 +7,7 @@ export default function Workouts() {
     <CapabilityCard<WorkoutSuggestion>
       title="Workout suggestions"
       description="Recommend workouts from activity patterns."
-      endpoint={`/api/workouts/suggestions/${encodeURIComponent('mona@example.com')}`}
+      endpoint="/api/workouts/suggestions/mona@example.com"
       collectionKey="suggestions"
       emptyMessage="No workout suggestions yet."
       renderItem={(suggestion) => suggestion.reason
