@@ -1,10 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { getJson } from '../api/client.js';
 
 type Props<T> = {
   title: string;
   description: string;
-  endpoint: string;
+  loadData: () => Promise<Record<string, T[]>>;
   collectionKey: string;
   emptyMessage: string;
   renderItem: (item: T) => ReactNode;
@@ -18,7 +17,7 @@ type LoadState<T> =
 export function CapabilityCard<T>({
   title,
   description,
-  endpoint,
+  loadData,
   collectionKey,
   emptyMessage,
   renderItem,
@@ -28,7 +27,7 @@ export function CapabilityCard<T>({
   useEffect(() => {
     let active = true;
     setState({ status: 'loading' });
-    getJson<Record<string, T[]>>(endpoint)
+    loadData()
       .then((response) => {
         const items = response[collectionKey];
         if (!Array.isArray(items)) throw new Error(`Invalid ${collectionKey} response`);
@@ -41,7 +40,7 @@ export function CapabilityCard<T>({
     return () => {
       active = false;
     };
-  }, [collectionKey, endpoint]);
+  }, [collectionKey, loadData]);
 
   return (
     <section className="card h-100">
